@@ -45,12 +45,19 @@ to HTML.
 @interaction[#:eval my-eval
                     (require scribble/render)
                     (render (list my-doc)
-                            (list "hello.rkt"))]
+                            (list "hello.scrbl"))]
 
 Ok, that was quiet.  What happened?
 
 By default, the renderer generates HTML text in the form of
 @filepath["sample-output.html"].  It also writes out auxiliary files,
-such as @filepath["scribble.css"], in the current directory.  
-If we want to direct the output elsewhere, we'll want to @racket[parameterize]
-the @racket[current-directory] to a target subdirectory.
+such as @filepath["scribble.css"], in the current directory.
+
+
+If we want to direct the output elsewhere, we'll want to use the [#:dest-dir]
+option to @racket[render].  Let's do that next.
+@interaction[#:eval my-eval
+                    (render #:dest-dir "dest" (list my-doc) (list "hello.scrbl"))
+                    (directory-list "dest")]
+                    
+                                                                  
