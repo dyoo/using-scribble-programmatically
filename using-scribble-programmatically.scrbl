@@ -13,8 +13,6 @@ the command line option doesn't provide fine-enough control over the output.
 This quick guide shows how to generate Scribble documents programmatically
 through pure Racket.
 
-Much of this will reference the low-level API infrastructure in Scribble.
-
 
 Let's say that we have a small document, like the following
 @filebox["hello.scrbl"]{
@@ -35,8 +33,8 @@ We can walk through this @emph{part} structure, using selectors such as @racket[
 @interaction[#:eval my-eval
                     (require scribble/core)
                     (part-blocks my-doc)]
-It should be fairly easy to do some kind of automated processing on Scribble documents, as
-they are structured values.
+Since @racket[doc] is a structured value, it's amendable to functions that we can write to automatically
+reprocess them if we choose to.
 
 
 The most common operation we can perform on a part is to render it.  Let's render @filepath["hello.scrbl"]
@@ -44,20 +42,20 @@ to HTML.
 
 @interaction[#:eval my-eval
                     (require scribble/render)
-                    (render (list my-doc)
-                            (list "hello.scrbl"))]
+                    (render (list my-doc) (list "hello.scrbl"))]
 
-Ok, that was quiet.  What happened?
+Ok, that was quiet.  What just happened?
 
 By default, the renderer generates HTML text in the form of
 @filepath["sample-output.html"].  It also writes out auxiliary files,
 such as @filepath["scribble.css"], in the current directory.
 
 
+@margin-note{Don't try to control @racket[current-directory] directly, as Scribble itself
+can muck with it throughout the rendering process.}
 If we want to direct the output elsewhere, we'll want to use the [#:dest-dir]
 option to @racket[render].  Let's do that next.
 @interaction[#:eval my-eval
                     (render #:dest-dir "dest" (list my-doc) (list "hello.scrbl"))
                     (directory-list "dest")]
-                    
-                                                                  
+Ok, so there are the files that @racket[render] generated for us.
